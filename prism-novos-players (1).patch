@@ -1,0 +1,518 @@
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index bf7c2c3..67388d7 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -66,6 +66,12 @@
+             android:supportsPictureInPicture="true"
+             android:resizeableActivity="true"
+             android:windowSoftInputMode="adjustResize">
++            <!-- "Open the music app" requests (Samsung's quick panel, Bixby, the system app chooser). -->
++            <intent-filter>
++                <action android:name="android.intent.action.MUSIC_PLAYER" />
++                <category android:name="android.intent.category.DEFAULT" />
++                <category android:name="android.intent.category.APP_MUSIC" />
++            </intent-filter>
+             <!-- Holding the "Prism" Quick Settings tile opens Prism. -->
+             <intent-filter>
+                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+@@ -104,51 +110,51 @@
+              1.6.7 still point at it. -->
+         <activity-alias android:name=".MainActivity" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="true" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconSpectrum" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_spectrum" android:roundIcon="@mipmap/ic_launcher_spectrum">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconSolid" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_solid" android:roundIcon="@mipmap/ic_launcher_solid">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconLight" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_light" android:roundIcon="@mipmap/ic_launcher_light">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconWave" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_wave" android:roundIcon="@mipmap/ic_launcher_wave">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconMidnight" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_midnight" android:roundIcon="@mipmap/ic_launcher_midnight">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconDusk" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_dusk" android:roundIcon="@mipmap/ic_launcher_dusk">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconPaper" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_paper" android:roundIcon="@mipmap/ic_launcher_paper">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconNeon" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_neon" android:roundIcon="@mipmap/ic_launcher_neon">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconPastel" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_pastel" android:roundIcon="@mipmap/ic_launcher_pastel">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconLine" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_line" android:roundIcon="@mipmap/ic_launcher_line">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+         <activity-alias android:name=".IconGold" android:targetActivity=".PrismActivity" android:exported="true"
+             android:enabled="false" android:icon="@mipmap/ic_launcher_gold" android:roundIcon="@mipmap/ic_launcher_gold">
+-            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
++            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /><category android:name="android.intent.category.APP_MUSIC" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
+         </activity-alias>
+ 
+         <!-- "Hey Google, play … on Prism": Assistant / Gemini only offer apps that take this as music sources. -->
+diff --git a/app/src/main/java/com/prism/music/data/prefs/Settings.kt b/app/src/main/java/com/prism/music/data/prefs/Settings.kt
+index f46f012..d44f2fb 100644
+--- a/app/src/main/java/com/prism/music/data/prefs/Settings.kt
++++ b/app/src/main/java/com/prism/music/data/prefs/Settings.kt
+@@ -416,7 +416,22 @@ enum class PlayerLayout(val label: String, val note: String) {
+     LYRICS(tr(R.string.lyrics), tr(R.string.opens_on_the_lyrics_a_small)),
+     MINIMAL(tr(R.string.minimal), tr(R.string.the_title_and_play_gestures_do)),
+     VINYL(tr(R.string.vinyl), tr(R.string.the_cover_as_a_record_s)),
+-    CASSETTE(tr(R.string.cassette), tr(R.string.the_cover_on_a_tape_whose)),
++    CASSETTE(tr(R.string.cassette), tr(R.string.the_cover_on_a_tape_whose)),    NEON(tr(R.string.player_neon), tr(R.string.player_neon_note)),
++    POLAROID(tr(R.string.player_polaroid), tr(R.string.player_polaroid_note)),
++    HALO(tr(R.string.player_halo), tr(R.string.player_halo_note)),
++    GLASS(tr(R.string.player_glass), tr(R.string.player_glass_note)),
++    STAMP(tr(R.string.player_stamp), tr(R.string.player_stamp_note)),
++    TILT(tr(R.string.player_tilt), tr(R.string.player_tilt_note)),
++    POSTER(tr(R.string.player_poster), tr(R.string.player_poster_note)),
++    ARCH(tr(R.string.player_theme_arch), tr(R.string.player_theme_arch_note)),
++    FLOWER(tr(R.string.player_theme_flower), tr(R.string.player_theme_flower_note)),
++    SQUIRCLE(tr(R.string.player_theme_squircle), tr(R.string.player_theme_squircle_note)),
++    EXPRESSIVO(tr(R.string.player_expressivo), tr(R.string.player_expressivo_note)),
++    GRANDE(tr(R.string.player_grande), tr(R.string.player_grande_note)),
++    ;
++
++    /** The built-in layout this one behaves like (the new ones only change the cover, the title and the controls). */
++    val like: PlayerLayout get() = when (this) { GRANDE -> COVER; EXPRESSIVO -> STANDARD; else -> this }
+ }
+ 
+ /** The knob at the progress bar's playhead ([AUTO]: a dot with the Thumb style, none with the others). */
+diff --git a/app/src/main/java/com/prism/music/ui/player/ArtThemes.kt b/app/src/main/java/com/prism/music/ui/player/ArtThemes.kt
+new file mode 100644
+index 0000000..07c9857
+--- /dev/null
++++ b/app/src/main/java/com/prism/music/ui/player/ArtThemes.kt
+@@ -0,0 +1,56 @@
++package com.prism.music.ui.player
++
++import androidx.compose.foundation.border
++import androidx.compose.foundation.shape.CircleShape
++import androidx.compose.foundation.shape.RoundedCornerShape
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.draw.shadow
++import androidx.compose.ui.graphics.Brush
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.Shape
++import androidx.compose.ui.graphics.graphicsLayer
++import androidx.compose.ui.unit.dp
++import com.prism.music.data.prefs.CoverShape
++import com.prism.music.data.prefs.PlayerLayout
++
++/**
++ * Player themes that dress the cover (Settings, Player, Layout). They keep the standard player
++ * and only change the cover's shape and frame, so nothing else in the player moves.
++ */
++internal object ArtThemes {
++    /** The cover's own shape for [layout], or null to keep the shape picked in Settings. */
++    fun shape(layout: PlayerLayout): CoverShape? = when (layout) {
++        PlayerLayout.ARCH -> CoverShape.ARCH
++        PlayerLayout.FLOWER, PlayerLayout.EXPRESSIVO -> CoverShape.FLOWER
++        PlayerLayout.SQUIRCLE -> CoverShape.SQUIRCLE
++        PlayerLayout.HALO -> CoverShape.CIRCLE
++        else -> null
++    }
++
++    /** Applied first: moves or lights the whole cover. */
++    fun Modifier.outer(layout: PlayerLayout, glow: Color): Modifier = when (layout) {
++        PlayerLayout.TILT -> graphicsLayer { rotationY = 14f; cameraDistance = 16f * density }
++        PlayerLayout.POLAROID -> graphicsLayer { rotationZ = -3f }
++        PlayerLayout.NEON -> shadow(22.dp, RoundedCornerShape(24.dp), ambientColor = glow, spotColor = glow)
++        PlayerLayout.HALO -> shadow(28.dp, CircleShape, ambientColor = glow, spotColor = glow)
++        else -> this
++    }
++
++    /** Applied after the cover is clipped to its shape: a frame drawn over its edge. */
++    fun Modifier.frame(layout: PlayerLayout, shape: Shape, a: Color, b: Color): Modifier = when (layout) {
++        PlayerLayout.NEON -> border(3.dp, Brush.linearGradient(listOf(a, b)), shape)
++        PlayerLayout.GLASS -> border(2.dp, Color.White.copy(alpha = 0.4f), shape)
++        PlayerLayout.STAMP -> border(4.dp, Color.White, shape)
++        PlayerLayout.POLAROID -> border(10.dp, Color.White, shape)
++        PlayerLayout.HALO -> border(2.dp, Color.White.copy(alpha = 0.3f), shape)
++        else -> this
++    }
++
++    /** POSTER and STAMP choose the corner size; the rest keep the Corners setting. */
++    fun corners(layout: PlayerLayout, fallback: androidx.compose.ui.unit.Dp) = when (layout) {
++        PlayerLayout.POSTER -> 36.dp
++        PlayerLayout.STAMP -> 2.dp
++        PlayerLayout.POLAROID -> 4.dp
++        else -> fallback
++    }
++}
+diff --git a/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt b/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt
+index 2d384c8..d88f378 100644
+--- a/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt
++++ b/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt
+@@ -233,7 +233,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+     // Settings → Player → Layout (1.7.4); a wide player (tablet, landscape) keeps its own.
+     val wideNow = com.prism.music.ui.theme.LocalWindowLayout.current.let { it.twoPanePlayer || it.shortLandscape || it.tabletop }
+     val layout = if (wideNow) com.prism.music.data.prefs.PlayerLayout.STANDARD else settings.playerLayout
+-    val lyricsState = rememberLyricsState(song, opened = lyricsOpen || settings.immersivePlayer || showProviders || layout == com.prism.music.data.prefs.PlayerLayout.LYRICS)
++    val lyricsState = rememberLyricsState(song, opened = lyricsOpen || settings.immersivePlayer || showProviders || layout.like == com.prism.music.data.prefs.PlayerLayout.LYRICS)
+     // With the lyrics in, the best part can start where a line does (or come from the chorus, without a heat curve).
+     LaunchedEffect(song.id, lyricsState.lyrics) { if (lyricsState.lyrics?.synced == true) c.bestParts.refine(song) }
+     // The playhead is read only where it's shown (the scrubber), so the player isn't recomposed as the song plays.
+@@ -311,7 +311,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+     // A playing music video does the same when "Controls hide over videos" is on (#166): they show as the video starts,
+     // go after a few seconds, and a tap on the video brings them; they stay away from song to song.
+     val videoHidesDeck = settings.view.videoControlsHide && videoMode
+-    val deckOnTap = layout == com.prism.music.data.prefs.PlayerLayout.COVER || videoHidesDeck
++    val deckOnTap = layout.like == com.prism.music.data.prefs.PlayerLayout.COVER || videoHidesDeck
+     LaunchedEffect(videoHidesDeck) { if (videoHidesDeck) coverDeck = true }
+     LaunchedEffect(coverDeck, isPlaying, volume.dragging, deckOnTap) {
+         if (coverDeck && isPlaying && !volume.dragging && deckOnTap) { delay(5000); coverDeck = false }
+@@ -319,7 +319,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+     // Lyrics layout: each song opens on its lyrics once they're in (a song without any stays on the cover).
+     val hasLyrics = lyricsState.lyrics != null
+     LaunchedEffect(song.id, hasLyrics, layout) {
+-        if (layout == com.prism.music.data.prefs.PlayerLayout.LYRICS && hasLyrics && !queueOpen && !statsOpen && !lyricsOpen) openLyrics()
++        if (layout.like == com.prism.music.data.prefs.PlayerLayout.LYRICS && hasLyrics && !queueOpen && !statsOpen && !lyricsOpen) openLyrics()
+     }
+ 
+     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+@@ -419,9 +419,9 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+     val artRequest = remember(artUrl) { coil3.request.ImageRequest.Builder(context).data(artUrl).size(1200).build() }
+     var artLoaded by remember(artUrl) { mutableStateOf(false) }
+     // Vinyl: the cover is a record (its own shape, no edge-to-edge banner).
+-    val vinyl = layout == com.prism.music.data.prefs.PlayerLayout.VINYL && !videoMode
++    val vinyl = layout.like == com.prism.music.data.prefs.PlayerLayout.VINYL && !videoMode
+     // Cassette (1.7.4): the cover on a tape, its reels turning.
+-    val cassette = layout == com.prism.music.data.prefs.PlayerLayout.CASSETTE && !videoMode
++    val cassette = layout.like == com.prism.music.data.prefs.PlayerLayout.CASSETTE && !videoMode
+     val heroMode = settings.fullBleedArtwork && !videoMode && !wide && !vinyl && !cassette
+     // The animated cover plays behind the whole player instead of in the cover (not with full-bleed artwork, which
+     // already shows it edge to edge).
+@@ -444,8 +444,16 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+     // A Full width cover meets the screen's edges, so it has square corners until it shrinks into the header.
+     val artCorners = if (settings.coverSize == com.prism.music.data.prefs.CoverSize.FULL) 0.dp else settings.playerArtCorners.dp
+     // Another shape picked for the player's cover (1.7.7) keeps it all the way into the header.
++    val themeShape = ArtThemes.shape(layout)
++    val themeGlowA = Color(0xFF8A6BFF)
++    val themeGlowB = Color(0xFF2DE2C0)
+     val artShape = when {
+         vinyl -> CircleShape
++        themeShape != null && !videoMode -> com.prism.music.ui.theme.CoverShapes.of(themeShape, artCorners)
++        layout == com.prism.music.data.prefs.PlayerLayout.POSTER || layout == com.prism.music.data.prefs.PlayerLayout.STAMP || layout == com.prism.music.data.prefs.PlayerLayout.POLAROID ->
++            RoundedCornerShape(ArtThemes.corners(layout, artCorners))
++        layout == com.prism.music.data.prefs.PlayerLayout.NEON || layout == com.prism.music.data.prefs.PlayerLayout.GLASS || layout == com.prism.music.data.prefs.PlayerLayout.TILT ->
++            RoundedCornerShape(24.dp)
+         settings.shapes.player != com.prism.music.data.prefs.CoverShape.ROUNDED && !cassette ->
+             com.prism.music.ui.theme.CoverShapes.of(settings.shapes.player, artCorners)
+         else -> RoundedCornerShape(lerp(artCorners, 8.dp, collapse.value))
+@@ -810,7 +818,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+                 BoxWithConstraints(Modifier.weight(1f).fillMaxWidth().padding(top = ART_BOX_TOP_PAD, bottom = if (roomyCover) 12.dp else 18.dp)) {
+                     // Settings → Player → Cover size: Large and Full width reach into the side margins (still square).
+                     // The Cover layout's cover is at least Large (its controls are out of the way).
+-                    val extra = if (layout == com.prism.music.data.prefs.PlayerLayout.COVER) maxOf(settings.coverSize.extra, com.prism.music.data.prefs.CoverSize.LARGE.extra) else settings.coverSize.extra
++                    val extra = if (layout.like == com.prism.music.data.prefs.PlayerLayout.COVER) maxOf(settings.coverSize.extra, com.prism.music.data.prefs.CoverSize.LARGE.extra) else settings.coverSize.extra
+                     val fullArt = minOf(maxWidth + extra.dp * 2, maxHeight - ART_TITLE_GAP - HEADER_HEIGHT).coerceAtLeast(THUMB_SIZE)
+                     // Room the cover can't use (a tall screen) is shared above and below it, as before 1.6.4 (all of it
+                     // above pushed the whole player down). The title drops into part of the room below, so no blank
+@@ -901,7 +909,11 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+                                 }
+                                 // A record keeps its own round shadow and clip (the tonearm reaches past its edge); a
+                                 // tape draws its own shell.
+-                                .then(if (vinyl || cassette) Modifier else Modifier.shadow(if (artLoaded) 10.dp else 0.dp, com.prism.music.ui.theme.CoverShapes.shadowOf(artShape)).clip(artShape).background(Color.Black.copy(alpha = 0.18f))),
++                                .then(if (vinyl || cassette) Modifier else with(ArtThemes) {
++                                    Modifier.outer(layout, themeGlowA)
++                                        .shadow(if (artLoaded) 10.dp else 0.dp, com.prism.music.ui.theme.CoverShapes.shadowOf(artShape)).clip(artShape).background(Color.Black.copy(alpha = 0.18f))
++                                        .frame(layout, artShape, themeGlowA, themeGlowB)
++                                }),
+                             contentAlignment = Alignment.Center,
+                         ) {
+                             // Vinyl: the cover as a record's label, turning while it plays (the animated cover isn't used).
+@@ -961,7 +973,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+                         // header keeps its own over the lyrics and the queue, and with Cover / Minimal, which hide the row).
+                         val heartBelow = com.prism.music.data.prefs.PlayerButton.LIKE in settings.playerButtons &&
+                             com.prism.music.data.prefs.DeckPart.BUTTONS in settings.playerDeck &&
+-                            layout != com.prism.music.data.prefs.PlayerLayout.MINIMAL && layout != com.prism.music.data.prefs.PlayerLayout.COVER &&
++                            layout.like != com.prism.music.data.prefs.PlayerLayout.MINIMAL && layout.like != com.prism.music.data.prefs.PlayerLayout.COVER &&
+                             !lyricsOpen && !queueOpen && !statsOpen
+                         if (centred) Spacer(Modifier.width(if (heartBelow) TITLE_BUTTONS_WIDTH - LIKE_GLYPH_ROOM else TITLE_BUTTONS_WIDTH))
+                         Column(
+@@ -977,7 +989,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+                             PlayerMarquee(
+                                 // The title leads, the artist under it a size smaller (#41). Spectrum: large and light
+                                 // (a tenth under headlineMedium, so longer titles fit before they scroll).
+-                                song.title, MaterialTheme.typography.headlineMedium.let { it.copy(fontSize = it.fontSize * 0.9f * titleScale, lineHeight = it.lineHeight * 0.9f * titleScale, fontWeight = settings.type.playerTitleWeight.title ?: it.fontWeight) }, Color.White, scrolls,
++                                song.title, MaterialTheme.typography.headlineMedium.let { it.copy(fontSize = it.fontSize * 0.9f * titleScale, lineHeight = it.lineHeight * 0.9f * titleScale, fontWeight = settings.type.playerTitleWeight.title ?: it.fontWeight) }.let { st -> if (layout == com.prism.music.data.prefs.PlayerLayout.EXPRESSIVO) st.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Serif, fontStyle = androidx.compose.ui.text.font.FontStyle.Italic, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold) else st }, Color.White, scrolls,
+                                 Modifier.clickable(enabled = song.album?.id != null) { song.album?.id?.let { onCollapse(); nav.go(Routes.album(it)) } },
+                             )
+                             // With more than one artist, the name asks which one to open (#42).
+@@ -1086,7 +1098,7 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+                         // at their end), and the source as a button at the lower left when asked for (1.7.9).
+                         if (lyricsOpen) LyricsButtonsRow(song, lyricsState, onChangeSource = { showProviders = true }, onNeedsDownload = { showSing = true }, modifier = Modifier.padding(bottom = 6.dp))
+                         // Minimal: play, and gestures for the rest (the lyrics and queue still have the whole deck).
+-                        if (layout == com.prism.music.data.prefs.PlayerLayout.MINIMAL && !lyricsOpen && !queueOpen && !statsOpen) {
++                        if (layout.like == com.prism.music.data.prefs.PlayerLayout.MINIMAL && !lyricsOpen && !queueOpen && !statsOpen) {
+                             MinimalPlay(isPlaying, buffering)
+                             Spacer(Modifier.height(deckGap))
+                         } else {
+diff --git a/app/src/main/java/com/prism/music/ui/player/PlayerControls.kt b/app/src/main/java/com/prism/music/ui/player/PlayerControls.kt
+index 2cec10c..2d95751 100644
+--- a/app/src/main/java/com/prism/music/ui/player/PlayerControls.kt
++++ b/app/src/main/java/com/prism/music/ui/player/PlayerControls.kt
+@@ -48,6 +48,7 @@ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.RowScope
+ import androidx.compose.foundation.layout.Spacer
++import androidx.compose.foundation.layout.aspectRatio
+ import androidx.compose.foundation.layout.fillMaxHeight
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+@@ -514,6 +515,11 @@ object BestPartButton {
+ fun TransportRow(isPlaying: Boolean, isLoading: Boolean, previousEnabled: Boolean, nextEnabled: Boolean, compact: Boolean = false, episode: Boolean = false) {
+     val pc = LocalContainer.current.player
+     val style = LocalAppSettings.current.transportStyle
++    val chosenLayout = LocalAppSettings.current.playerLayout
++    if (!compact && !episode && (chosenLayout == com.prism.music.data.prefs.PlayerLayout.EXPRESSIVO || chosenLayout == com.prism.music.data.prefs.PlayerLayout.GRANDE)) {
++        ExpressiveTransport(chosenLayout == com.prism.music.data.prefs.PlayerLayout.GRANDE, isPlaying, isLoading, previousEnabled, nextEnabled)
++        return
++    }
+     val playSize = if (compact) 58.dp else 74.dp
+     // With shuffle and repeat beside it, play's touch area gives a little room back (narrow phones).
+     val playTouch = if (compact) 76.dp else if (LocalAppSettings.current.playerShuffleRepeat) 80.dp else 92.dp
+@@ -560,6 +566,54 @@ fun TransportRow(isPlaying: Boolean, isLoading: Boolean, previousEnabled: Boolea
+     }
+ }
+ 
++/**
++ * The Expressive and Big Play players' controls: round and pill keys on glass, in Prism's own light. Expressive is a wide
++ * Play pill between two round skips; Big Play is a large round Play beside two tall skip keys.
++ */
++@Composable
++private fun ExpressiveTransport(big: Boolean, isPlaying: Boolean, isLoading: Boolean, previousEnabled: Boolean, nextEnabled: Boolean) {
++    val pc = LocalContainer.current.player
++    val haptics = rememberHaptics()
++    val playLabel = if (isPlaying) tr(R.string.widget_pause) else tr(R.string.widget_play)
++    if (big) {
++        Row(Modifier.fillMaxWidth().height(150.dp), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
++            Box(
++                Modifier.fillMaxHeight().aspectRatio(1f).clip(CircleShape).background(Color.White).clickable { haptics.click(); pc.togglePlay() },
++                contentAlignment = Alignment.Center,
++            ) {
++                if (isLoading) CircularProgressIndicator(color = Color.Black, strokeWidth = 2.dp, modifier = Modifier.size(40.dp))
++                else Icon(if (isPlaying) PrismIcons.Pause else PrismIcons.Play, playLabel, tint = Color.Black, modifier = Modifier.size(64.dp))
++            }
++            ExpressiveKey(PrismIcons.Previous, tr(R.string.widget_previous), previousEnabled, CircleShape, Modifier.weight(1f).fillMaxHeight()) { pc.previous() }
++            ExpressiveKey(PrismIcons.Next, tr(R.string.widget_next), nextEnabled, CircleShape, Modifier.weight(1f).fillMaxHeight()) { pc.next() }
++        }
++    } else {
++        Row(Modifier.fillMaxWidth().height(76.dp), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
++            ExpressiveKey(PrismIcons.Previous, tr(R.string.widget_previous), previousEnabled, CircleShape, Modifier.size(76.dp)) { pc.previous() }
++            Box(
++                Modifier.weight(1f).fillMaxHeight().clip(CircleShape).background(Color.White).clickable { haptics.click(); pc.togglePlay() },
++                contentAlignment = Alignment.Center,
++            ) {
++                if (isLoading) CircularProgressIndicator(color = Color.Black, strokeWidth = 2.dp, modifier = Modifier.size(28.dp))
++                else Text(playLabel.uppercase(), color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp, letterSpacing = 3.sp)
++            }
++            ExpressiveKey(PrismIcons.Next, tr(R.string.widget_next), nextEnabled, CircleShape, Modifier.size(76.dp)) { pc.next() }
++        }
++    }
++}
++
++/** A skip key on glass with a thin light edge, dimmed when it can't be used. */
++@Composable
++private fun ExpressiveKey(icon: ImageVector, description: String, enabled: Boolean, shape: androidx.compose.ui.graphics.Shape, modifier: Modifier, onClick: () -> Unit) {
++    val haptics = rememberHaptics()
++    val alpha by animateFloatAsState(if (enabled) 1f else 0.35f, label = "expressiveKey")
++    Box(
++        modifier.clip(shape).background(Color.White.copy(alpha = 0.12f)).border(1.dp, Color.White.copy(alpha = 0.22f), shape)
++            .clickable(enabled = enabled) { haptics.click(); onClick() },
++        contentAlignment = Alignment.Center,
++    ) { Icon(icon, description, tint = Color.White.copy(alpha = alpha), modifier = Modifier.size(28.dp)) }
++}
++
+ /** The Minimal player's one control (1.7.4): play / pause, large, in the Controls style picked; gestures do the rest. */
+ @Composable
+ fun MinimalPlay(isPlaying: Boolean, isLoading: Boolean) {
+diff --git a/app/src/main/java/com/prism/music/ui/screens/LookPreview.kt b/app/src/main/java/com/prism/music/ui/screens/LookPreview.kt
+index 76eecd7..4f0c688 100644
+--- a/app/src/main/java/com/prism/music/ui/screens/LookPreview.kt
++++ b/app/src/main/java/com/prism/music/ui/screens/LookPreview.kt
+@@ -162,7 +162,7 @@ fun MiniPlayerScreen(c: ThemeColors, song: Song?) {
+         val layout = s.playerLayout
+         val vinyl = layout == com.prism.music.data.prefs.PlayerLayout.VINYL
+         val fullBleed = s.fullBleedArtwork && !vinyl && layout != com.prism.music.data.prefs.PlayerLayout.CASSETTE
+-        val extra = if (layout == com.prism.music.data.prefs.PlayerLayout.COVER) maxOf(s.coverSize.extra, CoverSize.LARGE.extra) else s.coverSize.extra
++        val extra = if (layout.like == com.prism.music.data.prefs.PlayerLayout.COVER) maxOf(s.coverSize.extra, CoverSize.LARGE.extra) else s.coverSize.extra
+         val side = if (fullBleed) 0.dp else 28.dp - extra.dp
+         Column(Modifier.fillMaxSize().padding(top = if (fullBleed) 0.dp else 64.dp)) {
+             val coverShape = if (fullBleed || s.coverSize == CoverSize.FULL) RoundedCornerShape(0.dp) else RoundedCornerShape(s.playerArtCorners.dp)
+@@ -174,7 +174,7 @@ fun MiniPlayerScreen(c: ThemeColors, song: Song?) {
+                     Text(song?.artistText ?: tr(R.string.prism_sample), style = MaterialTheme.typography.bodyLarge, color = Color.White.copy(alpha = 0.7f), maxLines = 1)
+                 }
+             }
+-            if (layout == com.prism.music.data.prefs.PlayerLayout.LYRICS) {
++            if (layout.like == com.prism.music.data.prefs.PlayerLayout.LYRICS) {
+                 // The lyrics layout: a small cover beside the title, the lyrics under them.
+                 Row(Modifier.padding(horizontal = 28.dp), verticalAlignment = Alignment.CenterVertically) {
+                     StandIn(song, Modifier.size(56.dp), RoundedCornerShape(8.dp), hues)
+diff --git a/app/src/main/java/com/prism/music/ui/screens/PlayerYourWay.kt b/app/src/main/java/com/prism/music/ui/screens/PlayerYourWay.kt
+index 79d0643..8d82a96 100644
+--- a/app/src/main/java/com/prism/music/ui/screens/PlayerYourWay.kt
++++ b/app/src/main/java/com/prism/music/ui/screens/PlayerYourWay.kt
+@@ -1,5 +1,7 @@
+ package com.prism.music.ui.screens
+ 
++import androidx.compose.ui.graphics.graphicsLayer
++import androidx.compose.ui.draw.shadow
+ import com.prism.music.R
+ import com.prism.music.tr
+ import androidx.compose.foundation.background
+@@ -134,18 +136,35 @@ private fun LayoutSample(layout: PlayerLayout) {
+                     Spacer(Modifier.height(8.dp)); Bar(0.6f, 4.dp, Ink); Spacer(Modifier.height(6.dp)); Transport()
+                 }
+                 else -> {
+-                    val cover = when (layout) { PlayerLayout.COVER -> 0.7f; PlayerLayout.MINIMAL -> 0.52f; else -> 0.46f }
+-                    Box(Modifier.fillMaxWidth(cover).aspectRatio(1f).clip(RoundedCornerShape(4.dp)).background(Brush.linearGradient(listOf(Color(0xFF8A6BFF), Color(0xFFFF7A59)))))
++                    val cover = when (layout) { PlayerLayout.COVER, PlayerLayout.GRANDE -> 0.7f; PlayerLayout.MINIMAL -> 0.52f; else -> 0.46f }
++                    SampleCover(layout, cover)
+                     Spacer(Modifier.height(6.dp))
+                     Bar(0.6f, 4.dp, Ink, Alignment.Start); Spacer(Modifier.height(3.dp)); Bar(0.4f, 3.dp, Faint, Alignment.Start)
+                     when (layout) {
+-                        PlayerLayout.STANDARD -> {
++                        PlayerLayout.MINIMAL -> { Spacer(Modifier.height(6.dp)); Box(Modifier.size(16.dp).clip(CircleShape).background(Color.White)) }
++                        PlayerLayout.COVER -> {}
++                        PlayerLayout.GRANDE -> {
++                            // A big round Play beside two tall skip keys.
++                            Spacer(Modifier.height(6.dp))
++                            Row(Modifier.fillMaxWidth().height(32.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
++                                Box(Modifier.fillMaxHeight().aspectRatio(1f).clip(CircleShape).background(Color.White))
++                                Box(Modifier.weight(1f).fillMaxHeight().clip(CircleShape).background(Ink))
++                                Box(Modifier.weight(1f).fillMaxHeight().clip(CircleShape).background(Ink))
++                            }
++                        }
++                        else -> {
+                             Spacer(Modifier.height(6.dp))
+                             Box(Modifier.fillMaxWidth().height(2.dp).clip(CircleShape).background(Faint)) { Box(Modifier.fillMaxWidth(0.4f).height(2.dp).background(light)) }
+-                            Spacer(Modifier.height(5.dp)); Transport()
++                            Spacer(Modifier.height(5.dp))
++                            if (layout == PlayerLayout.EXPRESSIVO) {
++                                // A wide Play pill between two round skips.
++                                Row(Modifier.fillMaxWidth().height(16.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
++                                    Box(Modifier.size(16.dp).clip(CircleShape).background(Ink))
++                                    Box(Modifier.weight(1f).fillMaxHeight().clip(CircleShape).background(Color.White))
++                                    Box(Modifier.size(16.dp).clip(CircleShape).background(Ink))
++                                }
++                            } else Transport()
+                         }
+-                        PlayerLayout.MINIMAL -> { Spacer(Modifier.height(6.dp)); Box(Modifier.size(16.dp).clip(CircleShape).background(Color.White)) }
+-                        else -> {}
+                     }
+                 }
+             }
+@@ -153,6 +172,49 @@ private fun LayoutSample(layout: PlayerLayout) {
+     }
+ }
+ 
++/** The cover as each player dresses it: its shape and frame, in a sample's size. */
++@Composable
++private fun SampleCover(layout: PlayerLayout, fraction: Float) {
++    val grad = Brush.linearGradient(listOf(Color(0xFF8A6BFF), Color(0xFFFF7A59)))
++    val glow = Color(0xFF8A6BFF)
++    if (layout == PlayerLayout.FLOWER || layout == PlayerLayout.EXPRESSIVO) {
++        // Four overlapping petals.
++        Column(Modifier.fillMaxWidth(fraction).aspectRatio(1f)) {
++            repeat(2) {
++                Row(Modifier.weight(1f).fillMaxWidth()) {
++                    repeat(2) { Box(Modifier.weight(1f).fillMaxHeight().clip(CircleShape).background(grad)) }
++                }
++            }
++        }
++        return
++    }
++    val shape: androidx.compose.ui.graphics.Shape = when (layout) {
++        PlayerLayout.ARCH -> RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 4.dp, bottomEnd = 4.dp)
++        PlayerLayout.HALO -> CircleShape
++        PlayerLayout.SQUIRCLE -> RoundedCornerShape(14.dp)
++        PlayerLayout.POSTER -> RoundedCornerShape(10.dp)
++        PlayerLayout.NEON, PlayerLayout.GLASS, PlayerLayout.TILT -> RoundedCornerShape(7.dp)
++        PlayerLayout.STAMP, PlayerLayout.POLAROID -> RoundedCornerShape(1.dp)
++        else -> RoundedCornerShape(4.dp)
++    }
++    var m: Modifier = Modifier.fillMaxWidth(fraction).aspectRatio(if (layout == PlayerLayout.POSTER) 0.8f else 1f)
++    m = when (layout) {
++        PlayerLayout.NEON, PlayerLayout.HALO -> m.shadow(7.dp, shape, ambientColor = glow, spotColor = glow)
++        PlayerLayout.POLAROID -> m.rotate(-4f)
++        PlayerLayout.TILT -> m.graphicsLayer { rotationY = 18f }
++        else -> m
++    }
++    m = m.clip(shape).background(grad)
++    m = when (layout) {
++        PlayerLayout.NEON -> m.border(1.5.dp, Brush.linearGradient(listOf(Color(0xFF8A6BFF), Color(0xFF2DE2C0))), shape)
++        PlayerLayout.GLASS -> m.border(1.dp, Color.White.copy(alpha = 0.4f), shape)
++        PlayerLayout.STAMP -> m.border(2.dp, Color.White, shape)
++        PlayerLayout.POLAROID -> m.border(4.dp, Color.White, shape)
++        else -> m
++    }
++    Box(m)
++}
++
+ /** Previous, play and next, small. */
+ @Composable
+ private fun Transport() {
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index afa0966..9ed69aa 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -3972,4 +3972,28 @@
+     <string name="tour_1792_gestures">The player\'s gestures around its controls too</string>
+     <string name="tour_1792_colors">The mini player\'s progress in your accent, the playing song in the album\'s color</string>
+     <string name="not_with_full_bleed_artwork_the_banner_covers_it">Not with full-bleed artwork: the banner covers it</string>
++    <string name="player_neon" translatable="false">Neon</string>
++    <string name="player_neon_note" translatable="false">A glowing gradient frame around the cover</string>
++    <string name="player_polaroid" translatable="false">Polaroid</string>
++    <string name="player_polaroid_note" translatable="false">The cover as a tilted instant photo</string>
++    <string name="player_halo" translatable="false">Halo</string>
++    <string name="player_halo_note" translatable="false">A round cover with a soft glow</string>
++    <string name="player_glass" translatable="false">Glass</string>
++    <string name="player_glass_note" translatable="false">A frosted frame around the cover</string>
++    <string name="player_stamp" translatable="false">Stamp</string>
++    <string name="player_stamp_note" translatable="false">A flat cover with a hard shadow</string>
++    <string name="player_tilt" translatable="false">Tilt</string>
++    <string name="player_tilt_note" translatable="false">The cover turned slightly in 3D</string>
++    <string name="player_poster" translatable="false">Poster</string>
++    <string name="player_poster_note" translatable="false">A tall, softly rounded cover</string>
++    <string name="player_theme_arch" translatable="false">Arch</string>
++    <string name="player_theme_arch_note" translatable="false">The cover as an arch</string>
++    <string name="player_theme_flower" translatable="false">Flower</string>
++    <string name="player_theme_flower_note" translatable="false">The cover as a flower</string>
++    <string name="player_theme_squircle" translatable="false">Squircle</string>
++    <string name="player_theme_squircle_note" translatable="false">The cover as a soft square</string>
++    <string name="player_expressivo" translatable="false">Expressive</string>
++    <string name="player_expressivo_note" translatable="false">Flower cover, a wide Play pill with round skips</string>
++    <string name="player_grande" translatable="false">Big Play</string>
++    <string name="player_grande_note" translatable="false">Full-bleed cover, a big round Play with tall skip keys</string>
+ </resources>
