@@ -1,0 +1,147 @@
+diff --git a/app/src/main/java/com/prism/music/data/prefs/Settings.kt b/app/src/main/java/com/prism/music/data/prefs/Settings.kt
+index f46f012..28970a4 100644
+--- a/app/src/main/java/com/prism/music/data/prefs/Settings.kt
++++ b/app/src/main/java/com/prism/music/data/prefs/Settings.kt
+@@ -416,7 +416,16 @@ enum class PlayerLayout(val label: String, val note: String) {
+     LYRICS(tr(R.string.lyrics), tr(R.string.opens_on_the_lyrics_a_small)),
+     MINIMAL(tr(R.string.minimal), tr(R.string.the_title_and_play_gestures_do)),
+     VINYL(tr(R.string.vinyl), tr(R.string.the_cover_as_a_record_s)),
+-    CASSETTE(tr(R.string.cassette), tr(R.string.the_cover_on_a_tape_whose)),
++    CASSETTE(tr(R.string.cassette), tr(R.string.the_cover_on_a_tape_whose)),    NEON(tr(R.string.player_neon), tr(R.string.player_neon_note)),
++    POLAROID(tr(R.string.player_polaroid), tr(R.string.player_polaroid_note)),
++    HALO(tr(R.string.player_halo), tr(R.string.player_halo_note)),
++    GLASS(tr(R.string.player_glass), tr(R.string.player_glass_note)),
++    STAMP(tr(R.string.player_stamp), tr(R.string.player_stamp_note)),
++    TILT(tr(R.string.player_tilt), tr(R.string.player_tilt_note)),
++    POSTER(tr(R.string.player_poster), tr(R.string.player_poster_note)),
++    ARCH(tr(R.string.player_theme_arch), tr(R.string.player_theme_arch_note)),
++    FLOWER(tr(R.string.player_theme_flower), tr(R.string.player_theme_flower_note)),
++    SQUIRCLE(tr(R.string.player_theme_squircle), tr(R.string.player_theme_squircle_note)),
+ }
+ 
+ /** The knob at the progress bar's playhead ([AUTO]: a dot with the Thumb style, none with the others). */
+diff --git a/app/src/main/java/com/prism/music/ui/player/ArtThemes.kt b/app/src/main/java/com/prism/music/ui/player/ArtThemes.kt
+new file mode 100644
+index 0000000..a049883
+--- /dev/null
++++ b/app/src/main/java/com/prism/music/ui/player/ArtThemes.kt
+@@ -0,0 +1,56 @@
++package com.prism.music.ui.player
++
++import androidx.compose.foundation.border
++import androidx.compose.foundation.shape.CircleShape
++import androidx.compose.foundation.shape.RoundedCornerShape
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.draw.shadow
++import androidx.compose.ui.graphics.Brush
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.Shape
++import androidx.compose.ui.graphics.graphicsLayer
++import androidx.compose.ui.unit.dp
++import com.prism.music.data.prefs.CoverShape
++import com.prism.music.data.prefs.PlayerLayout
++
++/**
++ * Player themes that dress the cover (Settings, Player, Layout). They keep the standard player
++ * and only change the cover's shape and frame, so nothing else in the player moves.
++ */
++internal object ArtThemes {
++    /** The cover's own shape for [layout], or null to keep the shape picked in Settings. */
++    fun shape(layout: PlayerLayout): CoverShape? = when (layout) {
++        PlayerLayout.ARCH -> CoverShape.ARCH
++        PlayerLayout.FLOWER -> CoverShape.FLOWER
++        PlayerLayout.SQUIRCLE -> CoverShape.SQUIRCLE
++        PlayerLayout.HALO -> CoverShape.CIRCLE
++        else -> null
++    }
++
++    /** Applied first: moves or lights the whole cover. */
++    fun Modifier.outer(layout: PlayerLayout, glow: Color): Modifier = when (layout) {
++        PlayerLayout.TILT -> graphicsLayer { rotationY = 14f; cameraDistance = 16f * density }
++        PlayerLayout.POLAROID -> graphicsLayer { rotationZ = -3f }
++        PlayerLayout.NEON -> shadow(22.dp, RoundedCornerShape(24.dp), ambientColor = glow, spotColor = glow)
++        PlayerLayout.HALO -> shadow(28.dp, CircleShape, ambientColor = glow, spotColor = glow)
++        else -> this
++    }
++
++    /** Applied after the cover is clipped to its shape: a frame drawn over its edge. */
++    fun Modifier.frame(layout: PlayerLayout, shape: Shape, a: Color, b: Color): Modifier = when (layout) {
++        PlayerLayout.NEON -> border(3.dp, Brush.linearGradient(listOf(a, b)), shape)
++        PlayerLayout.GLASS -> border(2.dp, Color.White.copy(alpha = 0.4f), shape)
++        PlayerLayout.STAMP -> border(4.dp, Color.White, shape)
++        PlayerLayout.POLAROID -> border(10.dp, Color.White, shape)
++        PlayerLayout.HALO -> border(2.dp, Color.White.copy(alpha = 0.3f), shape)
++        else -> this
++    }
++
++    /** POSTER and STAMP choose the corner size; the rest keep the Corners setting. */
++    fun corners(layout: PlayerLayout, fallback: androidx.compose.ui.unit.Dp) = when (layout) {
++        PlayerLayout.POSTER -> 36.dp
++        PlayerLayout.STAMP -> 2.dp
++        PlayerLayout.POLAROID -> 4.dp
++        else -> fallback
++    }
++}
+diff --git a/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt b/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt
+index 2d384c8..5a0860e 100644
+--- a/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt
++++ b/app/src/main/java/com/prism/music/ui/player/NowPlaying.kt
+@@ -444,8 +444,16 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+     // A Full width cover meets the screen's edges, so it has square corners until it shrinks into the header.
+     val artCorners = if (settings.coverSize == com.prism.music.data.prefs.CoverSize.FULL) 0.dp else settings.playerArtCorners.dp
+     // Another shape picked for the player's cover (1.7.7) keeps it all the way into the header.
++    val themeShape = ArtThemes.shape(layout)
++    val themeGlowA = Color(0xFF8A6BFF)
++    val themeGlowB = Color(0xFF2DE2C0)
+     val artShape = when {
+         vinyl -> CircleShape
++        themeShape != null && !videoMode -> com.prism.music.ui.theme.CoverShapes.of(themeShape, artCorners)
++        layout == com.prism.music.data.prefs.PlayerLayout.POSTER || layout == com.prism.music.data.prefs.PlayerLayout.STAMP || layout == com.prism.music.data.prefs.PlayerLayout.POLAROID ->
++            RoundedCornerShape(ArtThemes.corners(layout, artCorners))
++        layout == com.prism.music.data.prefs.PlayerLayout.NEON || layout == com.prism.music.data.prefs.PlayerLayout.GLASS || layout == com.prism.music.data.prefs.PlayerLayout.TILT ->
++            RoundedCornerShape(24.dp)
+         settings.shapes.player != com.prism.music.data.prefs.CoverShape.ROUNDED && !cassette ->
+             com.prism.music.ui.theme.CoverShapes.of(settings.shapes.player, artCorners)
+         else -> RoundedCornerShape(lerp(artCorners, 8.dp, collapse.value))
+@@ -901,7 +909,11 @@ fun NowPlayingScreen(onCollapse: () -> Unit) {
+                                 }
+                                 // A record keeps its own round shadow and clip (the tonearm reaches past its edge); a
+                                 // tape draws its own shell.
+-                                .then(if (vinyl || cassette) Modifier else Modifier.shadow(if (artLoaded) 10.dp else 0.dp, com.prism.music.ui.theme.CoverShapes.shadowOf(artShape)).clip(artShape).background(Color.Black.copy(alpha = 0.18f))),
++                                .then(if (vinyl || cassette) Modifier else with(ArtThemes) {
++                                    Modifier.outer(layout, themeGlowA)
++                                        .shadow(if (artLoaded) 10.dp else 0.dp, com.prism.music.ui.theme.CoverShapes.shadowOf(artShape)).clip(artShape).background(Color.Black.copy(alpha = 0.18f))
++                                        .frame(layout, artShape, themeGlowA, themeGlowB)
++                                }),
+                             contentAlignment = Alignment.Center,
+                         ) {
+                             // Vinyl: the cover as a record's label, turning while it plays (the animated cover isn't used).
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index afa0966..a01deb7 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -3972,4 +3972,24 @@
+     <string name="tour_1792_gestures">The player\'s gestures around its controls too</string>
+     <string name="tour_1792_colors">The mini player\'s progress in your accent, the playing song in the album\'s color</string>
+     <string name="not_with_full_bleed_artwork_the_banner_covers_it">Not with full-bleed artwork: the banner covers it</string>
++    <string name="player_neon" translatable="false">Neon</string>
++    <string name="player_neon_note" translatable="false">A glowing gradient frame around the cover</string>
++    <string name="player_polaroid" translatable="false">Polaroid</string>
++    <string name="player_polaroid_note" translatable="false">The cover as a tilted instant photo</string>
++    <string name="player_halo" translatable="false">Halo</string>
++    <string name="player_halo_note" translatable="false">A round cover with a soft glow</string>
++    <string name="player_glass" translatable="false">Glass</string>
++    <string name="player_glass_note" translatable="false">A frosted frame around the cover</string>
++    <string name="player_stamp" translatable="false">Stamp</string>
++    <string name="player_stamp_note" translatable="false">A flat cover with a hard shadow</string>
++    <string name="player_tilt" translatable="false">Tilt</string>
++    <string name="player_tilt_note" translatable="false">The cover turned slightly in 3D</string>
++    <string name="player_poster" translatable="false">Poster</string>
++    <string name="player_poster_note" translatable="false">A tall, softly rounded cover</string>
++    <string name="player_theme_arch" translatable="false">Arch</string>
++    <string name="player_theme_arch_note" translatable="false">The cover as an arch</string>
++    <string name="player_theme_flower" translatable="false">Flower</string>
++    <string name="player_theme_flower_note" translatable="false">The cover as a flower</string>
++    <string name="player_theme_squircle" translatable="false">Squircle</string>
++    <string name="player_theme_squircle_note" translatable="false">The cover as a soft square</string>
+ </resources>
